@@ -1,0 +1,37 @@
+﻿@model PriceTracker
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>Prcies Dashboard Monitor</h1>
+<h2>Current Prices</h2>
+
+<form method="POST">
+    <div class="form-group">
+        <label asp-for="Name">Item name</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="URL">URL</label>
+        <input asp-for="URL" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="XPath">XPath</label>
+        <input asp-for="XPath" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Add new product to trace" />
+    </div>
+</form>
+
+@*@section Scripts {
+    <script>src = "~/js/addNewItem.jcs"</script>
+}*@
+
+<vc:latest-item></vc:latest-item>
