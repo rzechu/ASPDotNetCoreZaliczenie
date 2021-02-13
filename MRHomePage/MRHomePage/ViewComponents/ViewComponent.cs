@@ -10,8 +10,8 @@ namespace MRHomePage.ViewComponents
 {
     public class LatestPrice : ViewComponent
     {
-        private readonly MRDbContext dbContext = null;
-        public LatestPrice(MRDbContext dbContext)
+        private readonly SQLiteDbContext dbContext = null;
+        public LatestPrice(SQLiteDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

@@ -14,17 +14,17 @@ namespace MRHomePage.Helpers
         }
 
         public IControllers ControllerName { get; set; }
-        internal static NLog.Logger logError { get; private set; } = NLog.LogManager.GetLogger("Errors");
+        internal static NLog.Logger webLog { get; private set; } = NLog.LogManager.GetLogger("WebErrors");
 
         public static void LogException(Exception ex, string AdditionalInfo = null)
         {
             if(String.IsNullOrEmpty(AdditionalInfo))
             {
-                logError.Error(ex);
+                webLog.Error(ex);
             }
             else
             {
-                logError.Error(ex, AdditionalInfo);
+                webLog.Error(ex, AdditionalInfo);
             }
         }
     }

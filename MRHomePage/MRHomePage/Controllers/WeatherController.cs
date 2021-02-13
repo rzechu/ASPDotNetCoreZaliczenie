@@ -105,7 +105,12 @@ namespace MRHomePage.Controllers
             catch(WebAppException ex)
             {
                 WebAppException.LogException(ex);
-                throw;
+                return View("Error");
+            }
+            catch (Exception ex)
+            {
+                WebAppException.LogException(ex);
+                return View("Error");
             }
         }
 
