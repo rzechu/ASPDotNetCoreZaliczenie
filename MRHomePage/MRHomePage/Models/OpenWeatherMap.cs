@@ -8,6 +8,7 @@ namespace MRHomePage.Models
 {
     public class OpenWeatherMap
     {
+        public bool isApiKeyDefault { get; set; }
         public string apiResponse { get; set; }
 
         public Dictionary<string, string> cities

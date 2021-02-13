@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MRHomePage.Database;
 using MRHomePage.Helpers;
@@ -9,6 +10,7 @@ using MRHomePage.Interfaces;
 
 namespace MRHomePage.Controllers
 {
+    [Authorize]
     public class PriceDashboardController : Controller
     {
         //private readonly IDbContext _dbContext;

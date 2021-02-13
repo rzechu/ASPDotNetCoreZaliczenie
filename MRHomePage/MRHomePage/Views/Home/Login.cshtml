@@ -1,0 +1,33 @@
+﻿@model LoginModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    <strong>This section requires you to be logged in</strong>
+    @*<form method="post">
+            <input type="text" name="username" placeholder="Username">
+            <input type="password" name="password" placeholder="Password">
+            <button>Sign in</button>
+        </form>*@
+
+<form method="POST">
+    <div class="form-group">
+        <label asp-for="UserName">UserName</label>
+        <input asp-for="UserName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="UserPassword">UserPassword</label>
+        <input asp-for="UserPassword" type="password" class="form-control" />
+        @*@Html.PasswordFor(p => p.UserPassword)*@
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Login" />
+    </div>
+
+    @( (Model!=null && Model.IsWrongCredentials!=null && Model.IsWrongCredentials.HasValue && Model.IsWrongCredentials==true) ? @Html.Raw("<font color='red'>You have entered wrong credentials</font>") : Html.Raw(string.Empty))
+
+</form>
+
+}

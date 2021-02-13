@@ -58,8 +58,10 @@
                 @Html.RadioButtonFor(m => m.cities, city.Value) @city.Key
             </span>
         }
-
-        <button name="submit">Submit</button>
+        <br />
+        @(Model.isApiKeyDefault ? Html.Raw("<font color='red'>You are using default key. Change it in appsettings.json</font>") : Html.Raw("") )
+        <br />
+        <button name="submit" disabled="@Model.isApiKeyDefault">Submit</button>
     }
     <div id="message">@Html.Raw(Model.apiResponse)</div>
 

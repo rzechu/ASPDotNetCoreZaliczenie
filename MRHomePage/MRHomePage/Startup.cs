@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,16 @@ namespace MRHomePage
         {
             services.AddControllersWithViews();
 
-            
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.Cookie.Name = "MRHomeCookie";
+                options.LoginPath = "/Home/Login";
+
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                options.SlidingExpiration = true;
+            }
+            );
+
             services.AddEntityFrameworkSqlite().AddDbContext<Database.SQLiteDbContext>();
             //services.AddDbContext<Database.SQLiteDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }
@@ -51,7 +61,7 @@ namespace MRHomePage
 
             app.UseRouting();
 
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

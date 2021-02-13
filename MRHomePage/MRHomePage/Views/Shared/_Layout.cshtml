@@ -33,6 +33,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="PriceDashboard" asp-action="Index">Price Dashboard</a>
                         </li>
+                        <li class="nav-item">
+                            @( (User.Identity.IsAuthenticated == true) ?  @Html.Raw($"Zalogowano jako {User.Identity.Name}") : Html.Raw("") )
+                            @( (User.Identity.IsAuthenticated == true) ?  @Html.ActionLink("Logout", "Logout", "Home")  : @Html.ActionLink("Login", "Login", "Home") )
+                            @*<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>*@
+
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -17,9 +17,11 @@ using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using Microsoft.Extensions.Logging;
 using NLog;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MRHomePage.Controllers
 {
+    [Authorize]
     public class WeatherController : Controller, Helpers.IControllers
     {
         public static string ControllerName = typeof(WeatherController).Name;
@@ -49,14 +51,21 @@ namespace MRHomePage.Controllers
             {
                 logWeather.Trace("WeatherController used");
                 OpenWeatherMap openWeatherMap = FillCity();
-
                 return View(openWeatherMap);
             }
-            catch(WebAppException ex)
+            catch (WebAppException ex)
             {
                 Helpers.WebAppException.LogException(ex);
                 throw;
             }
+        }
+
+        private bool isDefaultAPIKey()
+        {
+            if (String.Equals(APIKEY, "getYourOwnAPIKey"))
+                return true;
+            else
+                return false;
         }
 
         [HttpPost]
@@ -105,12 +114,12 @@ namespace MRHomePage.Controllers
             catch(WebAppException ex)
             {
                 WebAppException.LogException(ex);
-                return View("Error");
+                throw;
             }
             catch (Exception ex)
             {
                 WebAppException.LogException(ex);
-                return View("Error");
+                throw;
             }
         }
 
@@ -124,6 +133,8 @@ namespace MRHomePage.Controllers
             openWeatherMap.cities.Add("Poznań", "3088171");
             openWeatherMap.cities.Add("Rzym", "3169070");
             openWeatherMap.cities.Add("Tel Aviv", "293397");
+
+            openWeatherMap.isApiKeyDefault = isDefaultAPIKey();
             return openWeatherMap;
         }
 

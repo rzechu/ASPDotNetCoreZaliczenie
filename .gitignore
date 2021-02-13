@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 /MRHomePage/MRHomePage/appsettings-private.json
 /MRHomePage/MRHomePage/appsettings-private.Development.json
+/MRHomePage/MRHomePage/appsettings.development.json
