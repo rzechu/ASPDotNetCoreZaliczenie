@@ -11,6 +11,7 @@ namespace MRHomePage.Entities
         public string Name { get; set; }
         public string URL { get; set; }
         public string XPath { get; set; }
+        public string LastValue { get; set; }
         public DateTime UpdatedDate { get; set; }
     }
 }

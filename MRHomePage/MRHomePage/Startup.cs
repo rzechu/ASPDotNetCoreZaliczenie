@@ -42,7 +42,7 @@ namespace MRHomePage
             }
             );
 
-            services.AddEntityFrameworkSqlite().AddDbContext<Database.SQLiteDbContext>();
+            services.AddEntityFrameworkSqlite().AddDbContext<Database.SQLiteDbContext>(ServiceLifetime.Transient); //https://stackoverflow.com/a/48783504/1831734
             //services.AddDbContext<Database.SQLiteDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }
 

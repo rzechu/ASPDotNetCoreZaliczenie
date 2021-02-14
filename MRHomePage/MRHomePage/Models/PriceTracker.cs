@@ -16,6 +16,8 @@ namespace MRHomePage.Models
         public string URL { get; set; }
         [Required]
         public string XPath { get; set; }
+        public string LastValue { get; set; }
+
         public DateTime UpdatedDate { get; set; }
     }
 }
