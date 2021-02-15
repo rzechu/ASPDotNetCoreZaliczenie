@@ -50,7 +50,7 @@ namespace MRHomePage.Controllers
             try
             {
                 logWeather.Trace("WeatherController used");
-                OpenWeatherMap openWeatherMap = FillCity();
+                OpenWeatherMap openWeatherMap = FillCity(APIKEY);
                 return View(openWeatherMap);
             }
             catch (WebAppException ex)
@@ -60,7 +60,7 @@ namespace MRHomePage.Controllers
             }
         }
 
-        private bool isDefaultAPIKey()
+        public static bool isDefaultAPIKey(string APIKEY)
         {
             if (String.Equals(APIKEY, "getYourOwnAPIKey"))
                 return true;
@@ -73,7 +73,7 @@ namespace MRHomePage.Controllers
         {
             try
             {
-                OpenWeatherMap openWeatherMap = FillCity();
+                OpenWeatherMap openWeatherMap = FillCity(APIKEY);
 
                 if (cities != null)
                 {
@@ -123,7 +123,7 @@ namespace MRHomePage.Controllers
             }
         }
 
-        public OpenWeatherMap FillCity()
+        public static OpenWeatherMap FillCity(string APIKEY)
         {
             OpenWeatherMap openWeatherMap = new OpenWeatherMap();
             openWeatherMap.cities = new Dictionary<string, string>();
@@ -134,7 +134,7 @@ namespace MRHomePage.Controllers
             openWeatherMap.cities.Add("Rzym", "3169070");
             openWeatherMap.cities.Add("Tel Aviv", "293397");
 
-            openWeatherMap.isApiKeyDefault = isDefaultAPIKey();
+            openWeatherMap.isApiKeyDefault = isDefaultAPIKey(APIKEY);
             return openWeatherMap;
         }
 

@@ -182,7 +182,7 @@ namespace MRHomePage.Controllers
             }
         }
 
-        private async Task<string> GetDataFromWeb(string Url, string XPath)
+        public static async Task<string> GetDataFromWeb(string Url, string XPath)
         {
             try
             {
