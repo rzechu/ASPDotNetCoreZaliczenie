@@ -89,18 +89,13 @@ namespace MRHomePage.Controllers
 
                     ResponseWeather rootObject = JsonSerializer.Deserialize<ResponseWeather>(apiResponse);
                     logWeather.Trace($"WeatherController used. Selected City = {rootObject.name}");
-
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("<table><tr><th>Weather Description</th></tr>");
-                    sb.Append("<tr><td>City:</td><td>" + rootObject.name + "</td></tr>");
-                    sb.Append("<tr><td>Country:</td><td>" + rootObject.sys.country + "</td></tr>");
-                    sb.Append("<tr><td>Wind:</td><td>" + rootObject.wind.speed + " Km/h</td></tr>");
-                    sb.Append("<tr><td>Current Temperature:</td><td>" + rootObject.main.temp + " °C</td></tr>");
-                    sb.Append("<tr><td>Humidity:</td><td>" + rootObject.main.humidity + "</td></tr>");
-                    sb.Append("<tr><td>Weather:</td><td>" + rootObject.weather[0].description + "</td></tr>");
-                    sb.Append("</table>");
-                    openWeatherMap.apiResponse = sb.ToString();
+                    openWeatherMap.apiResponse = "Success";
+                    openWeatherMap.City = rootObject.name ?? "";
+                    openWeatherMap.Country = rootObject.sys.country ?? "";
+                    openWeatherMap.WindSpeed = rootObject.wind.speed;
+                    openWeatherMap.Temp = rootObject.main.temp;
+                    openWeatherMap.Humidity = rootObject.main.humidity;
+                    openWeatherMap.Description = rootObject.weather[0].description ??"";
                 }
                 else
                 {
@@ -137,6 +132,5 @@ namespace MRHomePage.Controllers
             openWeatherMap.isApiKeyDefault = isDefaultAPIKey(APIKEY);
             return openWeatherMap;
         }
-
     }
 }

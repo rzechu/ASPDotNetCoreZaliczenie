@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MRHomePage.Database;
 using MRHomePage.Helpers;
 using MRHomePage.Interfaces;
@@ -14,7 +15,7 @@ namespace MRHomePage.Controllers
     public class PriceDashboardController : Controller
     {
         //private readonly IDbContext _dbContext;
-        private readonly SQLiteDbContext _dbContext = new SQLiteDbContext();
+        private readonly static SQLiteDbContext _dbContext = new SQLiteDbContext();
         public PriceDashboardController(/*SQLiteDbContext dbContext*/)
         {
             //_dbContext = dbContext;
@@ -27,11 +28,11 @@ namespace MRHomePage.Controllers
             return View();
         }
 
-        public IActionResult Edit(int Id)
+        public async Task<IActionResult> Edit(int Id)
         {
             try
             {
-                var itemToEdit = _dbContext.PricesToTrack.Where(w => w.Id == Id).FirstOrDefault();
+                var itemToEdit = await _dbContext.PricesToTrack.Where(w => w.Id == Id).FirstOrDefaultAsync();
                 Models.PriceTracker priceTrackToEdit = new Models.PriceTracker()
                 {
                     Id = itemToEdit.Id,
@@ -96,7 +97,7 @@ namespace MRHomePage.Controllers
 
         }
 
-        public async Task<IActionResult> GetData()
+        public IActionResult GetData()
         {
             GetDataWeb();
             var trackedPrices = GetPricesToTrack();
@@ -117,7 +118,7 @@ namespace MRHomePage.Controllers
                     UpdatedDate = DateTime.Now
                 };
 
-                _dbContext.PricesToTrack.Add(priceDb);
+                await _dbContext.PricesToTrack.AddAsync(priceDb);
                 await _dbContext.SaveChangesAsync();
 
                 var trackedPrices = GetPricesToTrack();
@@ -137,7 +138,7 @@ namespace MRHomePage.Controllers
         {
             try
             {
-                if (_dbContext != null && _dbContext.PricesToTrack != null && _dbContext.PricesToTrack.Count() > 0)
+                if (_dbContext != null && _dbContext.PricesToTrack != null && _dbContext.PricesToTrack.CountAsync().Result > 0)
                 {
                     List<Models.PriceTracker> prices = new List<Models.PriceTracker>();
                     foreach (var item in _dbContext.PricesToTrack)
@@ -164,7 +165,7 @@ namespace MRHomePage.Controllers
             }
         }
 
-        private async void GetDataWeb()
+        public static async void GetDataWeb()
         {
             try
             {
@@ -178,7 +179,7 @@ namespace MRHomePage.Controllers
             catch (Exception ex)
             {
                 WebAppException.LogException(ex);
-                throw;
+                //throw;
             }
         }
 
@@ -189,7 +190,7 @@ namespace MRHomePage.Controllers
                 List<string> result = new List<string>();
 
                 HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
-                var resultPage = web.Load(Url);
+                var resultPage = await web.LoadFromWebAsync(Url);
                 var node = resultPage.DocumentNode.SelectNodes(XPath);
                 if (node != null)
                 {
@@ -198,11 +199,6 @@ namespace MRHomePage.Controllers
                         if(!String.IsNullOrEmpty(item.InnerText))
                         {
                             result.Add(item.InnerText);
-
-                            //if (item.InnerLength>100)
-                            //    result.Add(item.InnerText.Trim().Substring(0, 100) );
-                            //else
-                            //    result.Add(item.InnerText.Trim().Substring(0, item.InnerText.Length-1));
                         }
                     }
                 }
@@ -210,56 +206,11 @@ namespace MRHomePage.Controllers
             }
             catch (Exception ex)
             {
-                WebAppException.LogException(ex);
-                throw new Exception($"Błąd podczas pobierania danych {System.Reflection.MethodBase.GetCurrentMethod().Name} z {Url}: {ex.Message}");
+                WebAppException.LogException(ex, $"Błąd podczas pobierania danych {System.Reflection.MethodBase.GetCurrentMethod().Name} z {Url}: {ex.Message}");
+                //throw new Exception($"Błąd podczas pobierania danych {System.Reflection.MethodBase.GetCurrentMethod().Name} z {Url}: {ex.Message}");
+                return  ex.Message;
             }
         }
-        #endregion
-
-        #region old - to delete
-        //public void OldGetDataWeb()
-        //{
-        //    try
-        //    {
-        //        List<string> xPathsToCheck = new List<string>();
-        //        xPathsToCheck.Add("/html/body/div[2]/div[4]/div/div/div[2]/div[1]/div[1]/h1/text()");
-        //        xPathsToCheck.Add("/html/body/div[2]/div[4]/div/div/div[2]/div[1]/div[2]/div/div/div[2]/div[2]/div[1]/div[1]/em");
-        //        OldGetDataFromWeb(@"https://ripe.pl/pl/p/Terminal-HP-t620-QUAD-CORE-16GF4GR-Zasilacz/10629", xPathsToCheck);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        WebAppException.LogException(ex);
-        //        throw;
-        //    }
-        //}
-
-        //public List<string> OldGetDataFromWeb(string Url, List<string> XPaths)
-        //{
-        //    List<string> downloadedNodes = new List<string>();
-        //    try
-        //    {
-        //        HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
-        //        var resultPage = web.Load(Url);
-        //        foreach (var xPath in XPaths)
-        //        {
-        //            var node = resultPage.DocumentNode.SelectNodes(xPath);
-        //            if (node != null)
-        //            {
-        //                foreach (var item in node)
-        //                {
-        //                    downloadedNodes.Add(item.InnerText.Trim());
-
-        //                }
-        //            }
-        //        }
-        //        return downloadedNodes;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        WebAppException.LogException(ex);
-        //        throw new Exception($"Błąd podczas pobierania danych {System.Reflection.MethodBase.GetCurrentMethod().Name}: {ex.Message}");
-        //    }
-        //}
         #endregion
     }
 }

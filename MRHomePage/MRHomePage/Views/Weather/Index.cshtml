@@ -63,7 +63,23 @@
         <br />
         <button name="submit" disabled="@Model.isApiKeyDefault">Submit</button>
     }
-    <div id="message">@Html.Raw(Model.apiResponse)</div>
+
+    <!--<div id="message">-->@*@Html.Raw(Model.apiResponse)*@<!--</div>-->
+    @if (Model.apiResponse != null)
+    {
+<div id="message">
+
+        <table>
+        <tr><th>Weather Description</th></tr>
+        <tr><td>City:</td><td>@Model.City </td></tr>
+        <tr><td>Country:</td><td>@Model.Country</td></tr>
+        <tr><td>Wind:</td><td>@Model.WindSpeed Km/h</td></tr>
+        <tr><td>Current Temperature:</td><td>@Model.Temp °C</td></tr>
+        <tr><td>Humidity:</td><td>@Model.Humidity</td></tr>
+        <tr><td>Weather:</td><td>@Model.Description</td></tr>
+        </table>
+</div>
+    }
 
 
 </div>

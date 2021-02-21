@@ -43,7 +43,8 @@ namespace MRHomePage
             );
 
             services.AddEntityFrameworkSqlite().AddDbContext<Database.SQLiteDbContext>(ServiceLifetime.Transient); //https://stackoverflow.com/a/48783504/1831734
-            //services.AddDbContext<Database.SQLiteDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+                                                                                                                   //services.AddDbContext<Database.SQLiteDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddHostedService<Service.PriceTrackerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
